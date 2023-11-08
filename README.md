@@ -22,7 +22,7 @@ sudo dpkg --add-architecture i386
 sudo apt-get update -y
 sudo apt-get install flex
 sudo apt-get install bison
-sudo apt-get install -y ia32-libs gcc-multilib g++-multilib xserver-xorg-dev:i386 libfreetype6-dev:i386
+sudo apt-get install -y lib32ncurses5 lib32z1 gcc-multilib g++-multilib xserver-xorg-dev:i386 libfreetype6-dev:i386
 ```
 
 ### Step 2 - Get sock.c and Wine 5.0
