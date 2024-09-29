@@ -15,6 +15,29 @@ D2GS: Version 1.13c
 Wine: Version 5.0
 ```
 
+## Swap file
+If your machine has 512 Mb of RAM, it is possible that your wine build will freeze. To avoid that you might want to add some
+swap memory.
+
+On Ubuntu Ubuntu 18.04.6 LTS:
+```
+free -m
+```
+If the output looks something like this, 
+```
+root@vps:~# free -m
+              total        used        free      shared  buff/cache   available
+Mem:            512         x           x           x         x          x
+Swap:            0          0           0           0         0          0
+```
+that means you machine doesn't have Swap memory. Execute the following comamnds to add 1 Gb to Swap.
+```
+dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+```
+
 ### Step 1 - Install the dependencies
 Using Ubuntu in terminal with a user and having sudo permissions, run the following commands to install the dependencies.
 ```
@@ -28,6 +51,7 @@ sudo apt-get install -y lib32ncurses5 lib32z1 gcc-multilib g++-multilib xserver-
 ### Step 2 - Get sock.c and Wine 5.0
 Get changed sock.c for D2GS to work and Wine 5.0 version.
 ```
+
 wget http://dl.winehq.org/wine/source/5.0/wine-5.0.tar.xz
 wget https://raw.githubusercontent.com/rodolfoorl/D2GS-under-Wine-5.0/main/sock.c
 ```
