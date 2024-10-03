@@ -27,10 +27,10 @@ If the output looks something like this,
 ```
 root@vps:~# free -m
               total        used        free      shared  buff/cache   available
-Mem:            512         x           x           x         x          x
-Swap:            0          0           0           0         0          0
+Mem:            481         132          32           0         315         335
+Swap:            0           0            0           0           0           0
 ```
-that means you machine doesn't have Swap memory. Execute the following comamnds to add 1 Gb to Swap.
+that means you machine doesn't have swap memory. Execute the following commands to add 1 Gb to swap.
 ```
 dd if=/dev/zero of=/swapfile bs=1024 count=1048576
 chmod 600 /swapfile
@@ -38,20 +38,28 @@ mkswap /swapfile
 swapon /swapfile
 ```
 
+`free -m` should now show something like this:
+
+```
+root@vps:~# free -m
+              total        used        free      shared  buff/cache   available
+Mem:            481         132          32           0         315         335
+Swap:          1023          60         963
+```
+
 ### Step 1 - Install the dependencies
 Using Ubuntu in terminal with a user and having sudo permissions, run the following commands to install the dependencies.
 ```
 sudo dpkg --add-architecture i386
 sudo apt-get update -y
-sudo apt-get install flex
-sudo apt-get install bison
+sudo apt-get install flex -y
+sudo apt-get install bison -y
 sudo apt-get install -y lib32ncurses5 lib32z1 gcc-multilib g++-multilib xserver-xorg-dev:i386 libfreetype6-dev:i386
 ```
 
 ### Step 2 - Get sock.c and Wine 5.0
 Get changed sock.c for D2GS to work and Wine 5.0 version.
 ```
-
 wget http://dl.winehq.org/wine/source/5.0/wine-5.0.tar.xz
 wget https://raw.githubusercontent.com/rodolfoorl/D2GS-under-Wine-5.0/main/sock.c
 ```
@@ -68,6 +76,8 @@ cd wine-dirs
 mkdir wine-build
 cd wine-build
 ../wine-source/configure --without-freetype
+echo "It's better check if you have multiple cores beforehand with 'nproc' command. If you have '4' cores, for example," &&
+echo "then it would be more efficient to run 'make -j4' instead of just 'make'"
 make
 sudo make install
 ```
@@ -75,10 +85,10 @@ sudo make install
 ### Step 4 - Get D2GS and Configure *.reg
 Now you should get the D2GS with your MPQ get and configure the D2GS for IP.
 ```
-#After preparing the D2GS files in a folder and having configured d2gs.reg, run it with this command inside the D2GS folder.
+echo "After preparing the D2GS files in a folder and having configured d2gs.reg, run it with this command inside the D2GS folder"
 wine regedit d2gs.reg
 
-#And execute D2GS.exe
+echo "And execute D2GS.exe"
 wine D2GS.exe
 ```
 Follow the same guide on Github. Good fun everyone!
